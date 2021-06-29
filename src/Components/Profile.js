@@ -1,54 +1,51 @@
-import React,{Component} from 'react'
+import React, { Component } from 'react'
 
-export default class Profile extends Component  {
-
-    _isMounted = false;
+export default class Profile extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            counter: 0
+            counter: 0,
         }
     }
 
+    /* ---- update counter every 1sec ---- */
     incrementCounter = () => {
-        const { counter } = this.state;
-        this.setState({ counter: counter + 1 });
+        this.setState({ counter: this.state.counter + 1 });
     };
 
     componentDidMount() {
-        this._isMounted = true;
-        this._isMounted && setInterval(this.incrementCounter, 1000);
+        this.timerID = setInterval(
+            () => this.incrementCounter(),
+            1000);
     }
 
-    componentWillUnmount(){
-        this._isMounted = false;
-        clearInterval(this.state.counter)
+    componentWillUnmount() {
+        clearInterval(this.timerID)
     }
 
-render(){
-    return (
-        <div className="Profile">
-            <div className="photo zoom">
-                <img className="photo" src={this.props.Person.imgSrc} alt="profile"></img>
+    render() {
+        return (
+            <div className="Profile">
+                <div className="photo zoom">
+                    <img className="photo" src={this.props.Person.imgSrc} alt="profile"></img>
+                </div>
+                <div className="fullname">
+                    <span className="column">Full Name :</span>
+                    <h2 className="column">{this.props.Person.fullname}</h2>
+                </div>
+                <div>
+                    <span className="column">Profession :</span>
+                    <h2 className="column">{this.props.Person.profession}</h2>
+                </div>
+                <div>
+                    <span className="column">Bio :</span>
+                    <h2 className="column">{this.props.Person.bio}</h2>
+                </div>
+                <div>
+                    <h2 className="interval">the component has been mounted {this.state.counter} seconds ago</h2>
+                </div>
             </div>
-            <div className="fullname">
-                <span className="column">Full Name :</span>
-                <h2 className="column">{this.props.Person.fullname}</h2>
-            </div>
-            <div>
-                <span className="column">Profession :</span>
-                <h2 className="column">{this.props.Person.profession}</h2>
-            </div>
-            <div>
-                <span className="column">Bio :</span>
-                <h2 className="column">{this.props.Person.bio}</h2>
-            </div>
-
-            <div>
-                <h2 className="interval">the component has been mounted {this.state.counter} seconds ago</h2>
-            </div>
-        </div>
-    )
-}
+        )
+    }
 }
